@@ -4,17 +4,18 @@ export class SignUp extends Component {
 constructor() {
     super();
     this.state = {
-        email: 'email',
         firstname: '',
         lastname: '',
-        password: '',
-        passwordConfirmation: ''
+        email: '',
+        pass: '',
+        passConfirmation: '',
+        flash: ''
     };
-    this.updateEmailField = this.updateEmailField.bind(this);
     this.updateFirstnameField = this.updateFirstnameField.bind(this);
     this.updateLastnameField = this.updateLastnameField.bind(this);
-    this.updatePasswordField = this.updatePasswordField.bind(this);
-    this.updatePasswordConfirmationField = this.updatePasswordConfirmationField.bind(this);
+    this.updateEmailField = this.updateEmailField.bind(this);
+    this.updatePassField = this.updatePassField.bind(this);
+    this.updatePassConfirmationField = this.updatePassConfirmationField.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
 }
 
@@ -27,19 +28,32 @@ updateFirstnameField(event) {
 updateLastnameField(event) {
     this.setState({lastname: event.target.value});
 }
-updatePasswordField(event) {
-    this.setState({password: event.target.value});
+updatePassField(event) {
+    this.setState({pass: event.target.value});
 }
-updatePasswordConfirmationField(event) {
-    this.setState({passwordConfirmation: event.target.value});
+updatePassConfirmationField(event) {
+    this.setState({passConfirmation: event.target.value});
 }
 handleSubmit(event) {
     event.preventDefault();
     console.log(this.state);
+    fetch("/auth/signup",
+{
+    method:  'POST',
+    headers:  new  Headers({
+        'Content-Type':  'application/json'
+    }),
+    body:  JSON.stringify(this.state),
+})
+.then(res  =>  res.json())
+.then(
+    res  =>  this.setState({"flash":  res.flash}),
+    err  =>  this.setState({"flash":  err.flash})
+)
 }
 
     render() {
-        const { email, firstname, lastname, password, passwordConfirmation } = this.state;
+        const { email, firstname, lastname, pass, passConfirmation, flash } = this.state;
         return (
             <form onSubmit={this.handleSubmit}>
                 <h1>Sign Up</h1>
@@ -62,19 +76,21 @@ handleSubmit(event) {
                 onChange={this.updateEmailField}
                 name="email"/>
 
-                <h2>{password}</h2>
+                <h2>{pass}</h2>
                 <input type="password"
-                value={password}
-                onChange={this.updatePasswordField}
+                value={pass}
+                onChange={this.updatePassField}
                 name="password"/>
 
-                <h2>{passwordConfirmation}</h2>
+                <h2>{passConfirmation}</h2>
                 <input type="passwordConfirmation"
-                value={passwordConfirmation}
-                onChange={this.updatePasswordConfirmationField}
+                value={passConfirmation}
+                onChange={this.updatePassConfirmationField}
                 name="passwordConfirmation"/>
 
                 <button type="submit">Soumettre</button>
+
+                <h3>{flash}</h3>
             </form>
         )
     }
