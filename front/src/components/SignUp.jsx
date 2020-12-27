@@ -1,4 +1,10 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+
+import "./SignUp.css"
+
+import { TextField, Button, Snackbar } from "@material-ui/core";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
 
 export class SignUp extends Component {
 constructor() {
@@ -9,7 +15,8 @@ constructor() {
         email: '',
         pass: '',
         passConfirmation: '',
-        flash: ''
+        flash: '',
+        open: false
     };
     this.updateFirstnameField = this.updateFirstnameField.bind(this);
     this.updateLastnameField = this.updateLastnameField.bind(this);
@@ -17,7 +24,18 @@ constructor() {
     this.updatePassField = this.updatePassField.bind(this);
     this.updatePassConfirmationField = this.updatePassConfirmationField.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-}
+    this.handleClick = this.handleClick.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+
+};
+
+handleClick() {
+    this.setState.open = !false;
+  };
+
+handleClose() {
+    this.setState.open = false;
+  };
 
 updateEmailField(event) {
     this.setState({email: event.target.value});
@@ -59,38 +77,54 @@ handleSubmit(event) {
                 <h1>Sign Up</h1>
 
                 <h2>{firstname}</h2>
-                <input type="text"
+                <TextField type="text"
                 value={firstname}
                 onChange={this.updateFirstnameField}
                 name="firstname"/>
 
                 <h2>{lastname}</h2>
-                <input type="text"
+                <TextField type="text"
                 value={lastname}
                 onChange={this.updateLastnameField}
                 name="lastname"/>
 
                 <h2>{email}</h2>
-                <input type="email"
+                <TextField type="email"
                 value={email}
                 onChange={this.updateEmailField}
                 name="email"/>
 
                 <h2>{pass}</h2>
-                <input type="password"
+                <TextField type="password"
                 value={pass}
                 onChange={this.updatePassField}
                 name="password"/>
 
                 <h2>{passConfirmation}</h2>
-                <input type="passwordConfirmation"
+                <TextField type="passwordConfirmation"
                 value={passConfirmation}
                 onChange={this.updatePassConfirmationField}
                 name="passwordConfirmation"/>
 
-                <button type="submit">Soumettre</button>
-
-                <h3>{flash}</h3>
+                <div>
+                <Button onClick={this.handleClick} type="submit" variant='contained'>Soumettre</Button>
+                <Snackbar open={this.setState.open}
+                          autoHideDuration={6000}
+                          onClose={this.handleClose}
+                          anchorOrigin={{ vertical: 'bottom', horizontal: 'center'}}
+                          message={ flash }
+                          action={[
+                            <IconButton
+                              key='close'
+                              aria-label='Close'
+                              color='inherit'
+                              onClose={this.handleClose}
+                            >
+                              <CloseIcon />
+                            </IconButton>,
+                          ]}
+                          />
+                </div>
             </form>
         )
     }
