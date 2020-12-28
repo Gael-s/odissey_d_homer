@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import { TextField, Button, SnackbarContent } from "@material-ui/core";
 
 import "./SignUp.css"
-
-import { TextField, Button, Snackbar } from "@material-ui/core";
-import IconButton from "@material-ui/core/IconButton";
-import CloseIcon from "@material-ui/icons/Close";
 
 export class SignUp extends Component {
 constructor() {
@@ -24,18 +22,7 @@ constructor() {
     this.updatePassField = this.updatePassField.bind(this);
     this.updatePassConfirmationField = this.updatePassConfirmationField.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleClick = this.handleClick.bind(this);
-    this.handleClose = this.handleClose.bind(this);
-
 };
-
-handleClick() {
-    this.setState.open = !false;
-  };
-
-handleClose() {
-    this.setState.open = false;
-  };
 
 updateEmailField(event) {
     this.setState({email: event.target.value});
@@ -54,7 +41,6 @@ updatePassConfirmationField(event) {
 }
 handleSubmit(event) {
     event.preventDefault();
-    console.log(this.state);
     fetch("/auth/signup",
 {
     method:  'POST',
@@ -105,26 +91,9 @@ handleSubmit(event) {
                 value={passConfirmation}
                 onChange={this.updatePassConfirmationField}
                 name="passwordConfirmation"/>
-
-                <div>
-                <Button onClick={this.handleClick} type="submit" variant='contained'>Soumettre</Button>
-                <Snackbar open={this.setState.open}
-                          autoHideDuration={6000}
-                          onClose={this.handleClose}
-                          anchorOrigin={{ vertical: 'bottom', horizontal: 'center'}}
-                          message={ flash }
-                          action={[
-                            <IconButton
-                              key='close'
-                              aria-label='Close'
-                              color='inherit'
-                              onClose={this.handleClose}
-                            >
-                              <CloseIcon />
-                            </IconButton>,
-                          ]}
-                          />
-                </div>
+                <Link to='/signin'>Sign In</Link>
+                <Button type="submit" variant='contained'>Soumettre</Button>
+                <SnackbarContent open={!this.setState.open} autohideuration={6000} message={flash} onClose={this.setState.open} />
             </form>
         )
     }
