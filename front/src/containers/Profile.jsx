@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom';
 
-import { List, ListItem, ListItemText, Button } from "@material-ui/core";
+import { List, ListItem, ListItemText, Button, SnackbarContent } from "@material-ui/core";
+
+
 
 export class Profile extends Component {
     constructor() {
@@ -10,12 +12,14 @@ export class Profile extends Component {
             profile: {
                 email:  "homer.simpson@wildcodeschool.fr",
                 firstname:  "Homer",
-                lastname:  "Simpson"
+                lastname:  "Simpson",
+                flash: "",
+                openFlash: false
             }
         }
     };
     render() {
-        const { email, firstname, lastname } = this.state.profile;
+        const { email, firstname, lastname, flash, openFlash } = this.state.profile;
         return (
             <>
             <List>
@@ -32,6 +36,12 @@ export class Profile extends Component {
                     <Button type="submit" variant='contained'>Sign Out</Button>
                 </Link>
             </List>
+            <SnackbarContent
+            open={openFlash}
+            autohideduration={6000}
+            message={flash}
+            onClose={() => openFlash(false)}
+        />
             </>
         )
     }

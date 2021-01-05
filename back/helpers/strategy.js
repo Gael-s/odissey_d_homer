@@ -30,11 +30,11 @@ passport.use(
             const hash = bcrypt.compareSync(pass, user[0].pass);
             if (hash) {
               return cb(null, user[0].email, {
-                message: "You are signed in",
+                message: "utilisateur connecté",
               });
             } else {
               return cb(null, false, {
-                message: "check your password",
+                message: "check ton password",
               });
             }
           }
